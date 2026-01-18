@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/userModel.js";
+import transporter from "../config/nodemailer.js";
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -41,6 +42,21 @@ export const register = async (req, res) => {
             sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
+
+        // Configure email options
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: email, // Using the email variable from req.body for stability
+            subject: "Welcome to Our App!",
+            text: `Hello ${name},\n\nYour account has been created successfully with email: ${email}\n\nBest regards,\nThe Team`
+        };
+
+        // Send welcome email (Wrapped in a separate try-catch to prevent app crash on SMTP errors)
+        try {
+            await transporter.sendMail(mailOptions);
+        } catch (emailError) {
+            console.error("Nodemailer Error: ", emailError.message);
+        }
 
         // Send final success response
         return res.status(201).json({
