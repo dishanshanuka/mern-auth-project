@@ -179,3 +179,12 @@ export const verifyEmail = async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 }
+
+// @desc    Check if User is Authenticated
+export const isAuth = async (req, res) => {
+    try {
+        return res.json({ success: true})
+    }catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}

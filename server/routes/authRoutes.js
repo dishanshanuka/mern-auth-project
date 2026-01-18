@@ -1,5 +1,5 @@
 import express from "express";
-import { login, logout, register, sendVerifyOtp, verifyEmail } from "../controllers/authController.js";
+import { login, logout, register, sendVerifyOtp, verifyEmail, isAuth } from "../controllers/authController.js";
 import userAuth from "../middleware/userAuth.js";
 import { send } from "vite";
 
@@ -19,6 +19,9 @@ authRoutes.post("/send-verify-otp", userAuth, sendVerifyOtp);
 
 // Logic for Verifying User Account
 authRoutes.post("/verify-account", userAuth, verifyEmail);
+
+// Logic for Checking if User is Authenticated
+authRoutes.post("/is-auth", userAuth, isAuth);
 
 
 // Exporting the router to use in server.js
