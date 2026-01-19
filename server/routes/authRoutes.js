@@ -1,7 +1,15 @@
 import express from "express";
-import { login, logout, register, sendVerifyOtp, verifyEmail, isAuth } from "../controllers/authController.js";
+import { 
+    login, 
+    logout, 
+    register, 
+    sendVerifyOtp, 
+    verifyEmail, 
+    isAuth, 
+    sendResetOtp,
+    resetPassword
+} from "../controllers/authController.js";
 import userAuth from "../middleware/userAuth.js";
-import { send } from "vite";
 
 const authRoutes = express.Router();
 
@@ -23,6 +31,10 @@ authRoutes.post("/verify-account", userAuth, verifyEmail);
 // Logic for Checking if User is Authenticated
 authRoutes.post("/is-auth", userAuth, isAuth);
 
+// Logic for Sending Password Reset OTP
+authRoutes.post("/send-reset-otp", sendResetOtp);
 
-// Exporting the router to use in server.js
+// Logic for Resetting Password
+authRoutes.post("/reset-password", resetPassword);
+
 export default authRoutes;
